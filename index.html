@@ -6,19 +6,18 @@
 <title>The Pink Diaries</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{height:100%;overflow:hidden}
-body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI',sans-serif;background:linear-gradient(175deg,#FFF0F3 0%,#FDDDE6 30%,#FCC2D2 70%,#F8B0C4 100%);color:#5C1A3A}
-.app{position:relative;width:100%;height:100%;background:transparent;overflow:hidden;display:flex;flex-direction:column}
+html{width:100%;height:100%}
+body{width:100%;height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI',sans-serif;background:linear-gradient(175deg,#FFF0F3 0%,#FDDDE6 30%,#FCC2D2 70%,#F8B0C4 100%);color:#5C1A3A}
+.app{position:absolute;top:0;left:0;right:0;bottom:0;overflow:hidden;display:flex;flex-direction:column}
 .status{display:flex;justify-content:center;align-items:center;padding:6px 16px 2px;font-size:8px;color:rgba(92,26,58,.4);letter-spacing:.5px;flex-shrink:0}
 .hdr{text-align:center;padding:6px 16px 10px;flex-shrink:0}
 .hdr h1{font-size:18px;font-weight:800;background:linear-gradient(135deg,#E91E63,#AD1457);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:.3px}
 .hdr .sub{font-size:9px;color:#B06080;margin-top:2px;font-weight:500;letter-spacing:.8px;text-transform:uppercase}
-.tab-bar{display:flex;gap:2px;padding:4px 8px 6px;background:rgba(255,255,255,.6);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid rgba(200,100,130,.1);flex-shrink:0;order:99}
-.tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:5px 2px 3px;border-radius:10px;font-size:8px;font-weight:600;color:#B06080;text-decoration:none;cursor:pointer;border:none;background:none;transition:all .2s ease}
-.tab svg{width:18px;height:18px;fill:#B06080;transition:fill .2s}
+.tab-bar{display:flex;gap:2px;padding:4px 8px 6px;background:rgba(255,255,255,.6);border-top:1px solid rgba(200,100,130,.1);flex-shrink:0}
+.tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:5px 2px 3px;border-radius:10px;font-size:8px;font-weight:600;color:#B06080;text-decoration:none;cursor:pointer;border:none;background:none}
+.tab svg{width:18px;height:18px;fill:#B06080}
 .tab.on{color:#E91E63}
 .tab.on svg{fill:#E91E63}
-.tab:active{transform:scale(.92)}
 .sec{display:flex;align-items:center;justify-content:center;gap:6px;padding:10px 16px 6px;flex-shrink:0}
 .sec span{font-size:11px;font-weight:700;color:#C2185B;letter-spacing:1px;text-transform:uppercase}
 .sec-line{flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(194,24,91,.2),transparent)}
@@ -26,8 +25,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI',sa
 .content::-webkit-scrollbar{width:3px}
 .content::-webkit-scrollbar-track{background:transparent}
 .content::-webkit-scrollbar-thumb{background:rgba(233,30,99,.2);border-radius:3px}
-.card{background:rgba(255,255,255,.85);backdrop-filter:blur(10px);border-radius:16px;padding:12px;margin-bottom:8px;box-shadow:0 2px 12px rgba(180,80,120,.08),0 1px 3px rgba(0,0,0,.04);display:flex;gap:10px;border:1px solid rgba(255,255,255,.6);cursor:pointer;transition:all .15s ease;-webkit-user-select:none;user-select:none}
-.card:active{transform:scale(.97);background:rgba(255,255,255,.95)}
+.card{background:rgba(255,255,255,.85);border-radius:16px;padding:12px;margin-bottom:8px;box-shadow:0 2px 12px rgba(180,80,120,.08),0 1px 3px rgba(0,0,0,.04);display:flex;gap:10px;border:1px solid rgba(255,255,255,.6);cursor:pointer;-webkit-user-select:none;user-select:none}
 .av{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#FCE4EC,#F48FB1);display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 2px 6px rgba(233,30,99,.15)}
 .av svg{width:18px;height:18px;fill:#E91E63}
 .body{flex:1;min-width:0}
@@ -36,41 +34,35 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI',sa
 .meta{display:flex;align-items:center;gap:6px;font-size:9px;color:#B06080;flex-wrap:wrap}
 .badge{background:linear-gradient(135deg,#FCE4EC,#F8BBD0);padding:2px 8px;border-radius:10px;font-weight:700;font-size:8px;color:#C2185B;border:1px solid rgba(233,30,99,.08)}
 .side{display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0;padding:0 2px;gap:2px}
-.hrt{width:32px;height:32px;border-radius:50%;background:rgba(233,30,99,.06);display:flex;align-items:center;justify-content:center;font-size:18px;color:#E91E63;cursor:pointer;text-decoration:none;transition:all .15s;border:none}
-.hrt:active{background:rgba(233,30,99,.15);transform:scale(1.2)}
+.hrt{width:32px;height:32px;border-radius:50%;background:rgba(233,30,99,.06);display:flex;align-items:center;justify-content:center;font-size:18px;color:#E91E63;cursor:pointer;text-decoration:none;border:none}
 .hrt-ct{font-size:8px;color:#B06080;font-weight:600}
 .pager{display:flex;justify-content:center;align-items:center;gap:12px;padding:10px 0 6px}
-.pbtn{padding:6px 16px;border-radius:20px;background:rgba(255,255,255,.7);color:#E91E63;text-decoration:none;font-weight:700;font-size:10px;border:1px solid rgba(233,30,99,.1);cursor:pointer;transition:all .15s;backdrop-filter:blur(10px)}
-.pbtn:active{background:#E91E63;color:#fff;transform:scale(.95)}
+.pbtn{padding:6px 16px;border-radius:20px;background:rgba(255,255,255,.7);color:#E91E63;text-decoration:none;font-weight:700;font-size:10px;border:1px solid rgba(233,30,99,.1);cursor:pointer}
 .pager .pg{font-size:10px;color:#B06080;font-weight:600}
 .empty{text-align:center;padding:40px 20px;color:#B06080}
 .empty .ico{font-size:36px;margin-bottom:10px;opacity:.6}
 .empty p{font-size:11px;line-height:1.5}
 .sub-wrap{padding:20px 10px;display:flex;flex-direction:column;align-items:center;gap:14px}
-.sub-box{width:100%;text-align:center;padding:24px 16px;background:rgba(255,255,255,.8);backdrop-filter:blur(10px);border-radius:20px;box-shadow:0 4px 16px rgba(180,80,120,.08);border:1px solid rgba(255,255,255,.6)}
+.sub-box{width:100%;text-align:center;padding:24px 16px;background:rgba(255,255,255,.8);border-radius:20px;box-shadow:0 4px 16px rgba(180,80,120,.08);border:1px solid rgba(255,255,255,.6)}
 .sub-box .ico{font-size:32px;margin-bottom:8px}
 .sub-title{font-weight:800;color:#E91E63;font-size:15px;margin-bottom:4px}
 .sub-desc{font-size:10px;color:#B06080;line-height:1.4}
-.sub-btn{display:block;width:100%;padding:14px;border-radius:14px;background:linear-gradient(135deg,#E91E63,#C2185B);color:#fff;text-align:center;font-weight:700;font-size:13px;text-decoration:none;cursor:pointer;margin-top:14px;border:none;box-shadow:0 4px 14px rgba(233,30,99,.3);transition:all .15s;letter-spacing:.3px}
-.sub-btn:active{transform:scale(.97);box-shadow:0 2px 8px rgba(233,30,99,.4)}
+.sub-btn{display:block;width:100%;padding:14px;border-radius:14px;background:linear-gradient(135deg,#E91E63,#C2185B);color:#fff;text-align:center;font-weight:700;font-size:13px;text-decoration:none;cursor:pointer;margin-top:14px;border:none;box-shadow:0 4px 14px rgba(233,30,99,.3);letter-spacing:.3px}
 .sub-note{font-size:9px;color:#B06080;opacity:.7}
 .denied{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;text-align:center;gap:8px}
 .denied .lock{font-size:48px;opacity:.5}
 .denied h2{font-weight:800;color:#C2185B;font-size:16px}
 .denied p{font-size:10px;color:#B06080;line-height:1.5}
 .detail{padding:10px}
-.detail-card{background:rgba(255,255,255,.85);backdrop-filter:blur(10px);border-radius:20px;padding:16px;box-shadow:0 4px 16px rgba(180,80,120,.08);border:1px solid rgba(255,255,255,.6)}
+.detail-card{background:rgba(255,255,255,.85);border-radius:20px;padding:16px;box-shadow:0 4px 16px rgba(180,80,120,.08);border:1px solid rgba(255,255,255,.6)}
 .detail-hdr{display:flex;align-items:center;gap:10px;margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid rgba(200,100,130,.08)}
 .detail-text{font-size:14px;line-height:1.6;color:#4A1830;margin-bottom:12px;word-wrap:break-word}
 .detail-meta{display:flex;align-items:center;gap:10px;font-size:10px;color:#B06080}
-.detail-back{display:block;text-align:center;margin-top:12px;padding:10px;border-radius:12px;background:rgba(255,255,255,.6);color:#E91E63;font-weight:700;font-size:11px;text-decoration:none;cursor:pointer;border:1px solid rgba(233,30,99,.08);transition:all .15s}
-.detail-back:active{background:#E91E63;color:#fff}
-@keyframes likeAnim{0%{transform:scale(1)}50%{transform:scale(1.4)}100%{transform:scale(1)}}
-.liked{animation:likeAnim .3s ease}
+.detail-back{display:block;text-align:center;margin-top:12px;padding:10px;border-radius:12px;background:rgba(255,255,255,.6);color:#E91E63;font-weight:700;font-size:11px;text-decoration:none;cursor:pointer;border:1px solid rgba(233,30,99,.08)}
 </style>
 </head>
 <body>
-<div class="app" id="root">
+<div class="app">
 <div class="status">THE PINK DIARIES</div>
 <div class="hdr">
 <h1>&#9829; The Pink Diaries &#9829;</h1>
@@ -79,6 +71,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI',sa
 <div id="app"></div>
 <div class="tab-bar" id="tabs"></div>
 </div>
+<img id="ping" style="display:none" width="1" height="1">
 <script>
 (function(){
 var P=new URLSearchParams(location.search);
@@ -95,8 +88,14 @@ else if(T=='submit')showSubmit();
 else if(T=='vip'&&!D.v)showDenied();
 else showFeed(D);
 function go(a,x){
-if(cb){var u=cb+(cb.indexOf('?')>-1?'&':'?')+'action='+a;if(x)u+='&'+x;new Image().src=u}
-else{demoNav(a,x)}
+if(cb){
+var u=cb+(cb.indexOf('?')>-1?'&':'?')+'action='+a;
+if(x)u+='&'+x;
+document.getElementById('ping').src=u+'&_='+(new Date().getTime());
+}else{
+demoNav(a,x);
+}
+return false;
 }
 window.go=go;
 function demoNav(a,x){
@@ -156,9 +155,9 @@ s+='</div>';
 s+='<div class="side"><button class="hrt" onclick="event.stopPropagation();go(\'like\',\'id='+n.i+'\')">&#9825;</button><span class="hrt-ct">'+n.l+'</span></div>';
 s+='</div>'})}
 s+='<div class="pager">';
-if(d.p>1)s+='<a class="pbtn" href="#" onclick="go(\'prev\');return false">&#9664; Prev</a>';
+if(d.p>1)s+='<a class="pbtn" href="#" onclick="return go(\'prev\')">&#9664; Prev</a>';
 s+='<span class="pg">Page '+d.p+'</span>';
-s+='<a class="pbtn" href="#" onclick="go(\'next\');return false">Next &#9654;</a>';
+s+='<a class="pbtn" href="#" onclick="return go(\'next\')">Next &#9654;</a>';
 s+='</div></div>';
 a.innerHTML=s}
 function showDetail(d){
@@ -170,7 +169,7 @@ s+='<div><div class="author">Anonymous</div><span class="badge">'+esc(n.c)+'</sp
 s+='<div class="detail-text">'+esc(n.t)+'</div>';
 s+='<div class="detail-meta"><span style="color:#E91E63">&#9829; '+n.l+' likes</span><span>'+esc(n.a)+'</span></div>';
 s+='</div>';
-s+='<a class="detail-back" href="#" onclick="go(\'tab\',\'t=read\');return false">&#9664; Back to entries</a>';
+s+='<a class="detail-back" href="#" onclick="return go(\'tab\',\'t=read\')">&#9664; Back to entries</a>';
 s+='</div></div>';
 a.innerHTML=s}
 function showSubmit(){
@@ -179,7 +178,7 @@ var s='<div class="content"><div class="sub-wrap"><div class="sub-box">';
 s+='<div class="ico">&#9998;</div>';
 s+='<div class="sub-title">Spill Your Tea</div>';
 s+='<div class="sub-desc">100% Anonymous. No names attached.<br>Your secret is safe with the diaries.</div>';
-s+='<a class="sub-btn" href="#" onclick="go(\'submit\');return false">TAP TO WRITE ENTRY</a>';
+s+='<a class="sub-btn" href="#" onclick="return go(\'submit\')">TAP TO WRITE ENTRY</a>';
 s+='</div>';
 s+='<div class="sub-note">A text box will appear in Second Life</div>';
 s+='</div></div>';
