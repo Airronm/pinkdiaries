@@ -95,7 +95,7 @@ else if(T=='submit')showSubmit();
 else if(T=='vip'&&!D.v)showDenied();
 else showFeed(D);
 function go(a,x){
-if(cb){var u=cb+(cb.indexOf('?')>-1?'&':'?')+'action='+a;if(x)u+='&'+x;location.href=u}
+if(cb){var u=cb+(cb.indexOf('?')>-1?'&':'?')+'action='+a;if(x)u+='&'+x;new Image().src=u}
 else{demoNav(a,x)}
 }
 window.go=go;
