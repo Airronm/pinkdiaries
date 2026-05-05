@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Pink Diaries</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',Arial,sans-serif;background:linear-gradient(180deg,#FDDDE6,#FCC2D2);color:#5C1A3A;min-height:100vh;overflow-x:hidden}
+.hdr{text-align:center;padding:10px 8px 6px;background:rgba(255,255,255,.35);border-bottom:2px solid rgba(200,100,130,.15)}
+.hdr h1{font-size:17px;color:#C2185B;letter-spacing:.5px}
+.hdr .sub{font-size:9px;color:#B06080;margin-top:2px}
+.tabs{display:flex;gap:4px;padding:6px 6px;background:rgba(255,255,255,.2);border-bottom:1px solid rgba(200,100,130,.12)}
+.tab{flex:1;padding:7px 2px;border-radius:8px;font-size:10px;font-weight:700;color:#8B3A62;text-align:center;text-decoration:none;background:rgba(255,255,255,.45);border:1px solid rgba(200,100,130,.15);cursor:pointer;transition:all .15s}
+.tab.on,.tab:hover{background:#E91E63;color:#fff;border-color:#C2185B}
+.sec{text-align:center;padding:8px;font-size:12px;font-weight:700;color:#C2185B}
+.feed{padding:0 8px 60px;overflow-y:auto;max-height:calc(100vh - 140px);-webkit-overflow-scrolling:touch}
+.feed::-webkit-scrollbar{width:4px}
+.feed::-webkit-scrollbar-track{background:rgba(200,100,130,.08);border-radius:2px}
+.feed::-webkit-scrollbar-thumb{background:#E8B4CB;border-radius:2px}
+.card{background:#fff;border-radius:12px;padding:10px;margin-bottom:7px;box-shadow:0 2px 8px rgba(180,80,120,.12);display:flex;gap:9px;border:1px solid rgba(220,140,170,.1);cursor:pointer;transition:transform .1s}
+.card:active{transform:scale(.98)}
+.av{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#FADDE1,#E0A8BF);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px}
+.av svg{width:18px;height:18px;fill:#C2185B}
+.body{flex:1;min-width:0}
+.author{font-size:10px;font-weight:700;color:#C2185B;margin-bottom:1px}
+.text{font-size:11px;color:#5C1A3A;line-height:1.35;margin-bottom:4px;word-wrap:break-word}
+.meta{display:flex;align-items:center;gap:6px;font-size:9px;color:#B06080;flex-wrap:wrap}
+.badge{background:linear-gradient(135deg,#FCE4EC,#F8BBD0);padding:1px 7px;border-radius:9px;font-weight:700;font-size:8px;color:#C2185B}
+.likes{display:flex;align-items:center;gap:2px}
+.side{display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0;padding:0 2px}
+.hrt{font-size:18px;color:#E91E63;cursor:pointer;text-decoration:none;line-height:1}
+.hrt:active{transform:scale(1.3)}
+.hrt-ct{font-size:8px;color:#B06080}
+.pager{display:flex;justify-content:center;align-items:center;gap:10px;padding:8px;font-size:10px;color:#8B3A62}
+.pbtn{padding:4px 12px;border-radius:6px;background:rgba(255,255,255,.5);color:#C2185B;text-decoration:none;font-weight:700;font-size:10px;border:1px solid rgba(200,100,130,.15);cursor:pointer}
+.pbtn:active{background:#E91E63;color:#fff}
+.empty{text-align:center;padding:30px 15px;color:#B06080}
+.empty .ico{font-size:32px;margin-bottom:8px}
+.sub-wrap{padding:15px}
+.sub-box{text-align:center;padding:18px;background:#fff;border-radius:14px;box-shadow:0 2px 10px rgba(180,80,120,.1)}
+.sub-box .ico{font-size:28px;margin-bottom:6px}
+.sub-btn{display:block;width:100%;padding:12px;border-radius:10px;background:linear-gradient(135deg,#E91E63,#C2185B);color:#fff;text-align:center;font-weight:700;font-size:13px;text-decoration:none;cursor:pointer;margin-top:10px;border:none;box-shadow:0 3px 8px rgba(200,50,100,.25)}
+.sub-btn:active{transform:scale(.97)}
+.sub-note{text-align:center;margin-top:6px;font-size:9px;color:#B06080}
+.denied{text-align:center;padding:30px 15px}
+.denied .lock{font-size:42px;margin-bottom:8px}
+.detail{padding:12px}
+.detail-card{background:#fff;border-radius:14px;padding:14px;box-shadow:0 2px 10px rgba(180,80,120,.12)}
+.detail-hdr{display:flex;align-items:center;gap:8px;margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid rgba(200,100,130,.1)}
+.detail-cat{font-size:10px}
+.detail-text{font-size:13px;line-height:1.5;color:#5C1A3A;margin-bottom:10px;word-wrap:break-word}
+.detail-meta{display:flex;align-items:center;gap:10px;font-size:10px;color:#B06080}
+.detail-back{display:block;text-align:center;margin-top:10px;padding:8px;border-radius:8px;background:rgba(255,255,255,.5);color:#C2185B;font-weight:600;font-size:11px;text-decoration:none;cursor:pointer}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+    <h1>&#9829; The Pink Diaries &#9829;</h1>
+    <div class="sub">Anonymous Tea. Private Access.</div>
+</div>
+<div class="tabs" id="tabs"></div>
+<div id="app"></div>
+
+<script>
+(function(){
+var P=new URLSearchParams(location.search),cb=P.get('cb')||'',D;
+try{var h=location.hash.substring(1);if(h){var b=atob(h);var u8=new Uint8Array(b.length);for(var x=0;x<b.length;x++)u8[x]=b.charCodeAt(x);D=JSON.parse(new TextDecoder().decode(u8))}else D=demo()}catch(e){D=demo()}
+
+var T=D.tab||'read';
+mkTabs(T);
+if(T=='detail')showDetail(D);
+else if(T=='submit')showSubmit();
+else if(T=='vip'&&!D.v)showDenied();
+else showFeed(D);
+
+function go(a,x){if(!cb)return;var u=cb+(cb.indexOf('?')>-1?'&':'?')+'action='+a;if(x)u+='&'+x;location.href=u}
+window.go=go;
+
+function esc(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML}
+
+function mkTabs(act){
+var ts=[{id:'read',l:'Read'},{id:'submit',l:'Submit'},{id:'featured',l:'Featured'},{id:'vip',l:'VIP'}];
+var c=document.getElementById('tabs');
+ts.forEach(function(t){
+var a=document.createElement('a');
+a.className='tab'+(act==t.id||((act=='detail')&&t.id=='read')?' on':'');
+a.textContent=t.l;
+a.href='#';
+a.onclick=function(e){e.preventDefault();go('tab','t='+t.id)};
+c.appendChild(a)})
+}
+
+function showFeed(d){
+var a=document.getElementById('app'),m=d.m=='featured'?'&#9733; FEATURED &#9733;':'&#9829; LATEST ENTRIES &#9829;';
+var s='<div class="sec">'+m+'</div><div class="feed">';
+if(!d.e||!d.e.length){s+='<div class="empty"><div class="ico">&#9749;</div>No entries yet.<br>Be the first to spill some tea!</div>'}
+else{d.e.forEach(function(n){
+s+='<div class="card" onclick="go(\'view\',\'id='+n.i+'\')">';
+s+='<div class="av"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M12 14c-6 0-8 3-8 3v2h16v-2s-2-3-8-3z"/></svg></div>';
+s+='<div class="body">';
+s+='<div class="author">Anonymous</div>';
+s+='<div class="text">'+esc(n.t)+'</div>';
+s+='<div class="meta"><span class="badge">'+esc(n.c)+'</span><span class="likes">&#9829; '+n.l+'</span><span>'+esc(n.a)+'</span></div>';
+s+='</div>';
+s+='<div class="side"><a class="hrt" href="#" onclick="event.stopPropagation();go(\'like\',\'id='+n.i+'\');return false">&#9825;</a><span class="hrt-ct">'+n.l+'</span></div>';
+s+='</div>'})}
+s+='</div>';
+s+='<div class="pager">';
+if(d.p>1)s+='<a class="pbtn" href="#" onclick="go(\'prev\');return false">&#9664; Prev</a>';
+s+='<span>Page '+d.p+'</span>';
+s+='<a class="pbtn" href="#" onclick="go(\'next\');return false">Next &#9654;</a>';
+s+='</div>';
+a.innerHTML=s}
+
+function showDetail(d){
+var a=document.getElementById('app'),n=d.entry;
+if(!n){a.innerHTML='<div class="empty">Entry not found.</div>';return}
+var s='<div class="detail"><div class="detail-card">';
+s+='<div class="detail-hdr"><div class="av"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M12 14c-6 0-8 3-8 3v2h16v-2s-2-3-8-3z"/></svg></div>';
+s+='<div><div class="author">Anonymous</div><div class="detail-cat"><span class="badge">'+esc(n.c)+'</span></div></div></div>';
+s+='<div class="detail-text">'+esc(n.t)+'</div>';
+s+='<div class="detail-meta"><span class="likes">&#9829; '+n.l+' likes</span><span>'+esc(n.a)+'</span></div>';
+s+='</div>';
+s+='<a class="detail-back" href="#" onclick="go(\'tab\',\'t=read\');return false">&#9664; Back to entries</a>';
+s+='</div>';
+a.innerHTML=s}
+
+function showSubmit(){
+var a=document.getElementById('app');
+var s='<div class="sub-wrap"><div class="sub-box">';
+s+='<div class="ico">&#9998;</div>';
+s+='<div style="font-weight:700;color:#C2185B;font-size:14px">Spill Your Tea</div>';
+s+='<div style="font-size:10px;color:#B06080;margin-top:4px">100% Anonymous. No names attached.</div>';
+s+='<a class="sub-btn" href="#" onclick="go(\'submit\');return false">TAP TO WRITE ENTRY</a>';
+s+='</div><div class="sub-note">A text box will appear in SL</div></div>';
+a.innerHTML=s}
+
+function showDenied(){
+var a=document.getElementById('app');
+var s='<div class="denied">';
+s+='<div class="lock">&#128274;</div>';
+s+='<div style="font-weight:700;color:#C2185B;font-size:15px">VIP Access Required</div>';
+s+='<div style="font-size:10px;color:#B06080;margin-top:6px">Activate the group tag<br>to unlock exclusive content.</div>';
+s+='</div>';
+a.innerHTML=s}
+
+function demo(){return{e:[
+{i:3,t:"he told me the same thing girl",c:"Tea",l:3,a:"2m ago"},
+{i:2,t:"not him TP'ing to everybody house...",c:"Drama",l:7,a:"5m ago"},
+{i:1,t:"girl stand up. we know that's not new.",c:"Confession",l:12,a:"7m ago"}
+],p:1,m:"latest",v:0,tab:"read"}}
+})();
+</script>
+</body>
+</html>
